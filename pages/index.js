@@ -466,8 +466,8 @@ export default function Home() {
           <a href="#precios">Precios</a>
         </div>
         <div className="nav-actions">
-          <a href="/api/auth/steam" className="btn-ghost">Iniciar Sesion</a>
-          <a href="/register" className="btn-cta">Registrar</a>
+          <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-ghost">Iniciar Sesion</a>
+          <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-cta">Registrar</a>
         </div>
       </nav>
 
@@ -492,7 +492,7 @@ export default function Home() {
           </p>
 
           <div className="hero-actions">
-            <a href="/register" className="btn-hero-primary">
+            <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-hero-primary">
               Unirse ahora
               <span style={{fontSize:18}}>→</span>
             </a>
@@ -569,7 +569,7 @@ export default function Home() {
               Cada mes las mejores comunidades compiten por el titulo de liga latina.
               Premio variable segun inscripciones y donaciones de viewers.
             </p>
-            <a href="/register" className="btn-hero-primary" style={{display:'inline-flex'}}>
+            <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-hero-primary" style={{display:'inline-flex'}}>
               Inscribir mi comunidad
             </a>
           </div>
@@ -594,7 +594,7 @@ export default function Home() {
       <section className="cta-section" id="precios">
         <h2 className="cta-title">Empieza gratis hoy</h2>
         <p className="cta-sub">Sin tarjeta de credito. Sin contratos. Solo Dota 2.</p>
-        <a href="/register" className="btn-cta-white">
+        <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-cta-white">
           Crear mi cuenta
           <span style={{fontSize:18}}>→</span>
         </a>

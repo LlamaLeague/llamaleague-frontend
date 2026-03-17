@@ -139,7 +139,7 @@ export default function MiComunidad() {
               <div className="sb-name">{user.username}</div>
               <div className="sb-type">Streamer</div>
             </div>
-            <a href="/api/auth/logout" className="sb-logout">✕</a>
+            <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout">✕</a>
           </div>
         </aside>
 

@@ -274,7 +274,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
             <a href="/panel" className="btn-nav-ghost">Mi panel</a>
           ) : (
             <>
-              <a href="/api/auth/steam" className="btn-nav-ghost">Iniciar sesion</a>
+              <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-nav-ghost">Iniciar sesion</a>
               <a href="/register"       className="btn-nav-red">Registrar</a>
             </>
           )}

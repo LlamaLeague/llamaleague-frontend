@@ -99,7 +99,7 @@ function Sidebar({ user }) {
           <div className="sb-name">{user.username}</div>
           <div className="sb-type">{user.type === 'streamer' ? 'Streamer' : 'Jugador'}</div>
         </div>
-        <a href="/api/auth/logout" className="sb-logout" title="Cerrar sesion">✕</a>
+        <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout" title="Cerrar sesion">✕</a>
       </div>
     </aside>
   )
