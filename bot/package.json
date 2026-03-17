@@ -1,0 +1,19 @@
+{
+  "name": "llamaleague-bot",
+  "version": "4.0.0",
+  "description": "Bot Dota 2 para LlamaLeague",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "1.35.7",
+    "dota2": "^7.0.3",
+    "dotenv": "^16.0.0",
+    "protobufjs": "^4.1.3",
+    "steam-user": "^4.29.3"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}

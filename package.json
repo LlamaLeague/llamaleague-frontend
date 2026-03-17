@@ -1,0 +1,24 @@
+{
+  "name": "llamaleague",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "date-fns": "^4.1.0",
+    "iron-session": "^8.0.4",
+    "mercadopago": "^2.12.0",
+    "next": "15.2.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "15.2.4"
+  }
+}
