@@ -4,6 +4,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../../lib/api'
 
 export default function MiComunidad() {
   const router = useRouter()
@@ -13,7 +14,7 @@ export default function MiComunidad() {
   const [loading,   setLoading]   = useState(true)
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(async ({ user }) => {
         if (!user)                    return router.replace('/')
@@ -21,7 +22,7 @@ export default function MiComunidad() {
         if (user.type !== 'streamer') return router.replace('/panel')
         setUser(user)
 
-        const res  = await fetch('/api/comunidad/mia')
+        const res  = await apiFetch('/api/comunidad/mia')
         const data = await res.json()
         if (!data.community) return router.replace('/panel/comunidad/nueva')
         setCommunity(data.community)

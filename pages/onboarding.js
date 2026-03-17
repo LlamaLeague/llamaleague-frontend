@@ -2,6 +2,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../lib/api'
 
 export default function Onboarding() {
   const router  = useRouter()
@@ -12,7 +13,7 @@ export default function Onboarding() {
   const [error,   setError]   = useState(null)
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(({ user }) => {
         if (!user) return router.replace('/')
@@ -27,7 +28,7 @@ export default function Onboarding() {
     setSaving(true)
     setError(null)
     try {
-      const res  = await fetch('/api/auth/set-type', {
+      const res  = await apiFetch('/api/auth/set-type', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ type: choice }),

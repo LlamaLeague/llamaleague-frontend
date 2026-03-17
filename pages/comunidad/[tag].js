@@ -7,6 +7,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../lib/api'
 import { createClient } from '@supabase/supabase-js'
 
 const supabasePublic = createClient(
@@ -70,7 +71,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
   const [joinMsg,    setJoinMsg]    = useState(null)
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(async ({ user }) => {
         if (!user) return
@@ -91,7 +92,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
     setJoining(true)
     setJoinMsg(null)
     try {
-      const res  = await fetch('/api/comunidad/unirse', {
+      const res  = await apiFetch('/api/comunidad/unirse', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ community_id: community.id }),

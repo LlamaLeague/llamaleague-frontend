@@ -7,6 +7,7 @@
 import Head from 'next/head'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../../lib/api'
 
 const STATUS_LABEL = {
   queued:    { text:'En cola — bot preparando lobby...', color:'#fbbf24' },
@@ -34,7 +35,7 @@ export default function SalaPage() {
 
   // ─── Cargar usuario ──────────────────────────────────────────────────────────
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(({ user }) => {
         if (!user) return router.replace('/')
@@ -46,7 +47,7 @@ export default function SalaPage() {
   const fetchSala = async () => {
     if (!id) return
     try {
-      const res  = await fetch(`/api/salas/${id}`)
+      const res  = await apiFetch(`/api/salas/${id}`)
       const data = await res.json()
       if (!res.ok) { setError(data.error); return }
       setSala(data.sala)
@@ -86,7 +87,7 @@ export default function SalaPage() {
   const handleJoin = async () => {
     setJoining(true)
     try {
-      const res  = await fetch(`/api/salas/${id}/unirse`, { method:'POST' })
+      const res  = await apiFetch(`/api/salas/${id}/unirse`, { method:'POST' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       fetchSala()
@@ -100,7 +101,7 @@ export default function SalaPage() {
   const handleAction = async (action) => {
     setActing(true)
     try {
-      const res  = await fetch(`/api/salas/${id}/${action}`, { method:'POST' })
+      const res  = await apiFetch(`/api/salas/${id}/${action}`, { method:'POST' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       fetchSala()

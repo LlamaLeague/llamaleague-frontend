@@ -5,6 +5,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../../lib/api'
 
 export default function NuevaComunidad() {
   const router  = useRouter()
@@ -23,7 +24,7 @@ export default function NuevaComunidad() {
   })
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(({ user }) => {
         if (!user)                  return router.replace('/')
@@ -50,7 +51,7 @@ export default function NuevaComunidad() {
     setError(null)
 
     try {
-      const res  = await fetch('/api/comunidad/crear', {
+      const res  = await apiFetch('/api/comunidad/crear', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(form),

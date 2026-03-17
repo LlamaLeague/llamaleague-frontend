@@ -5,6 +5,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../lib/api'
 
 // ─── Hook de usuario ──────────────────────────────────────────────────────────
 function useUser() {
@@ -13,7 +14,7 @@ function useUser() {
   const router = useRouter()
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(({ user }) => {
         if (!user)       return router.replace('/')
@@ -110,7 +111,7 @@ function StreamerPanel({ user }) {
   const [stats, setStats] = useState(null)
 
   useEffect(() => {
-    fetch('/api/panel/stats')
+    apiFetch('/api/panel/stats')
       .then(r => r.json())
       .then(d => setStats(d))
       .catch(() => setStats({}))

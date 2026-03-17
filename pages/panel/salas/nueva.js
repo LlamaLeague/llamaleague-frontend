@@ -5,6 +5,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { apiFetch } from '../../lib/api'
 
 const MODOS = [
   { val:'ap',    label:'All Pick',       desc:'Cada jugador elige libremente su heroe.' },
@@ -37,7 +38,7 @@ export default function NuevaSala() {
   })
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    apiFetch('/api/auth/me')
       .then(r => r.json())
       .then(async ({ user }) => {
         if (!user)                    return router.replace('/')
@@ -46,7 +47,7 @@ export default function NuevaSala() {
         setUser(user)
 
         // Cargar comunidad del streamer
-        const res  = await fetch('/api/comunidad/mia')
+        const res  = await apiFetch('/api/comunidad/mia')
         const data = await res.json()
         if (!data.community) return router.replace('/panel/comunidad/nueva')
         setCommunity(data.community)
@@ -62,7 +63,7 @@ export default function NuevaSala() {
     setError(null)
 
     try {
-      const res  = await fetch('/api/salas/crear', {
+      const res  = await apiFetch('/api/salas/crear', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ ...form, community_id: community.id }),
