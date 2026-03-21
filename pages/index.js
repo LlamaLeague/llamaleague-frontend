@@ -466,8 +466,8 @@ export default function Home() {
           <a href="#precios">Precios</a>
         </div>
         <div className="nav-actions">
-          <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-ghost">Iniciar Sesion</a>
-          <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-cta">Registrar</a>
+          <a href="/api/auth/steam" className="btn-ghost">Iniciar Sesion</a>
+          <a href="/api/auth/steam" className="btn-cta">Registrar</a>
         </div>
       </nav>
 
