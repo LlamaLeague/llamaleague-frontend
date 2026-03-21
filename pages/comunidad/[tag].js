@@ -7,7 +7,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { apiFetch } from '../lib/api'
+import { apiFetch } from '@/lib/api'
 import { createClient } from '@supabase/supabase-js'
 
 const supabasePublic = createClient(

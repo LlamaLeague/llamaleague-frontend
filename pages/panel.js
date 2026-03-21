@@ -5,7 +5,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { apiFetch } from '../lib/api'
+import { apiFetch } from '@/lib/api'
 
 // ─── Hook de usuario ──────────────────────────────────────────────────────────
 function useUser() {

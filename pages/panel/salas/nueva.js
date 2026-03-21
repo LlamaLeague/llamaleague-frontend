@@ -5,7 +5,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { apiFetch } from '../../lib/api'
+import { apiFetch } from '@/lib/api'
 
 const MODOS = [
   { val:'ap',    label:'All Pick',       desc:'Cada jugador elige libremente su heroe.' },

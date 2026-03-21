@@ -7,7 +7,7 @@
 import Head from 'next/head'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { apiFetch } from '../../lib/api'
+import { apiFetch } from '@/lib/api'
 
 const STATUS_LABEL = {
   queued:    { text:'En cola — bot preparando lobby...', color:'#fbbf24' },

@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { apiFetch } from '../lib/api'
+import { apiFetch } from '@/lib/api'
 
 export default function Onboarding() {
   const router  = useRouter()
