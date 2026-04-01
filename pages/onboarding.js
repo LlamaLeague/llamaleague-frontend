@@ -136,7 +136,7 @@ export default function Onboarding() {
           <div className="welcome">
             <div className="welcome-tag">Bienvenido</div>
             <h1>Elige tu rol</h1>
-            <p className="welcome-sub">Hola <strong>{user.username}</strong>, esto se configura una sola vez.</p>
+            <p className="welcome-sub">Hola <strong>{user.display_name}</strong>, esto se configura una sola vez.</p>
           </div>
 
           <div className="options">

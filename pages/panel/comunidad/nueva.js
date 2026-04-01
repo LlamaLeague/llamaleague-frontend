@@ -211,7 +211,7 @@ export default function NuevaComunidad() {
           <div className="sb-footer">
             <img src={user.avatar_url} alt="" className="sb-avatar" />
             <div>
-              <div className="sb-name">{user.username}</div>
+              <div className="sb-name">{user.display_name}</div>
               <div className="sb-type">Streamer</div>
             </div>
           </div>

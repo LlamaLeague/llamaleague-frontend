@@ -66,7 +66,9 @@ export default function SalaPage() {
   // ─── Countdown WO ────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!sala || sala.status !== 'waiting') return
-    const deadline = new Date(sala.wo_deadline).getTime()
+    // wo_deadline = started_at (o created_at) + wo_timer minutos
+    const base = sala.started_at || sala.created_at
+    const deadline = new Date(base).getTime() + (sala.wo_timer || 5) * 60 * 1000
     const tick = () => {
       const left = Math.max(0, Math.floor((deadline - Date.now()) / 1000))
       setTimeLeft(left)
@@ -74,7 +76,7 @@ export default function SalaPage() {
     tick()
     const t = setInterval(tick, 1000)
     return () => clearInterval(t)
-  }, [sala?.wo_deadline, sala?.status])
+  }, [sala?.started_at, sala?.created_at, sala?.status, sala?.wo_timer])
 
   // ─── Copiar contrasena ───────────────────────────────────────────────────────
   const copyPassword = () => {
@@ -308,7 +310,7 @@ export default function SalaPage() {
         {user && (
           <div className="nav-user">
             <img src={user.avatar_url} alt="" className="nav-avatar" />
-            <span className="nav-username">{user.username}</span>
+            <span className="nav-username">{user.display_name}</span>
           </div>
         )}
       </nav>
@@ -381,11 +383,11 @@ export default function SalaPage() {
             )}
 
             {/* Resultado */}
-            {sala.status === 'completed' && sala.winner && (
+            {sala.status === 'completed' && sala.winner_team && (
               <div className="card">
                 <div className="resultado-block">
-                  <div className={`resultado-winner ${sala.winner}`}>
-                    {sala.winner === 'radiant' ? 'RADIANT GANA' : 'DIRE GANA'}
+                  <div className={`resultado-winner ${sala.winner_team}`}>
+                    {sala.winner_team === 'radiant' ? 'RADIANT GANA' : 'DIRE GANA'}
                   </div>
                   <div className="resultado-sub">Partida finalizada</div>
                 </div>
@@ -421,7 +423,7 @@ export default function SalaPage() {
                       {p ? (
                         <>
                           <img src={p.avatar_url || '/default-avatar.png'} alt="" className="slot-avatar" />
-                          <span className="slot-name">{p.username}</span>
+                          <span className="slot-name">{p.display_name}</span>
                           {p.mmr && <span className="slot-mmr">{p.mmr} MMR</span>}
                           {p.team && (
                             <span className={`slot-team ${p.team}`}>

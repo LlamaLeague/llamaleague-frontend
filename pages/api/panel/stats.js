@@ -1,20 +1,14 @@
 // pages/api/panel/stats.js
-// Devuelve estadisticas del streamer para los KPIs del panel.
-// GET /api/panel/stats
+// GET — estadisticas generales del panel.
 
 import { getIronSession } from 'iron-session'
-import { createClient }   from '@supabase/supabase-js'
+import { supabaseAdmin }  from '@/lib/supabase'
 
 const SESSION_OPTIONS = {
   password:    process.env.SESSION_SECRET,
   cookieName:  'llamaleague_session',
   cookieOptions: { secure: process.env.NODE_ENV === 'production', httpOnly:true, sameSite:'lax' },
 }
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-)
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end()
@@ -28,38 +22,44 @@ export default async function handler(req, res) {
   const startOfMonth = new Date()
   startOfMonth.setDate(1); startOfMonth.setHours(0,0,0,0)
 
-  const { count: salas_mes } = await supabase
+  const { count: salas_mes } = await supabaseAdmin
     .from('lobbies')
     .select('*', { count:'exact', head:true })
-    .eq('created_by', userId)
     .gte('created_at', startOfMonth.toISOString())
 
-  // Jugadores unicos en salas del streamer
-  const { data: lobbyIds } = await supabase
+  // Total salas
+  const { count: salas_total } = await supabaseAdmin
     .from('lobbies')
-    .select('id')
-    .eq('created_by', userId)
+    .select('*', { count:'exact', head:true })
 
-  let jugadores = 0
-  if (lobbyIds?.length) {
-    const ids = lobbyIds.map(l => l.id)
-    const { count } = await supabase
-      .from('lobby_players')
-      .select('user_id', { count:'exact', head:true })
-      .in('lobby_id', ids)
-    jugadores = count ?? 0
-  }
+  // Jugadores únicos (todos los registros de lobby_players)
+  const { count: jugadores } = await supabaseAdmin
+    .from('lobby_players')
+    .select('user_id', { count:'exact', head:true })
 
   // Victorias por equipo (salas finalizadas)
-  const { data: finalizadas } = await supabase
+  const { data: finalizadas } = await supabaseAdmin
     .from('lobbies')
-    .select('winner')
-    .eq('created_by', userId)
+    .select('winner_team')
     .eq('status', 'completed')
-    .not('winner', 'is', null)
+    .not('winner_team', 'is', null)
 
-  const rad_wins  = finalizadas?.filter(l => l.winner === 'radiant').length ?? 0
-  const dire_wins = finalizadas?.filter(l => l.winner === 'dire').length    ?? 0
+  const rad_wins  = finalizadas?.filter(l => l.winner_team === 'radiant').length ?? 0
+  const dire_wins = finalizadas?.filter(l => l.winner_team === 'dire').length    ?? 0
 
-  return res.status(200).json({ salas_mes, jugadores, rad_wins, dire_wins })
+  // Stats personales del usuario logueado
+  const { data: user } = await supabaseAdmin
+    .from('users')
+    .select('points, wins, losses, lc_balance, tier')
+    .eq('id', userId)
+    .single()
+
+  return res.status(200).json({
+    salas_mes:   salas_mes   ?? 0,
+    salas_total: salas_total ?? 0,
+    jugadores:   jugadores   ?? 0,
+    rad_wins,
+    dire_wins,
+    user_stats: user ?? {},
+  })
 }

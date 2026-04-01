@@ -27,7 +27,7 @@ export default function Comunidades() {
     )
     sb.from('communities').select(`
       id, name, tag, description, platform, channel_url, access_mode, created_at,
-      owner:owner_id ( username, avatar_url )
+      owner:owner_id ( display_name, avatar_url )
     `).order('created_at', { ascending: false }).then(({ data }) => {
       setComunidades(data ?? [])
       setLoading(false)
@@ -128,10 +128,10 @@ export default function Comunidades() {
             <div className="sb-footer">
               <img src={user.avatar_url} alt="" className="sb-avatar" />
               <div>
-                <div className="sb-name">{user.username}</div>
+                <div className="sb-name">{user.display_name}</div>
                 <div className="sb-type">Jugador</div>
               </div>
-              <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout">✕</a>
+              <a href="/api/auth/logout" className="sb-logout">✕</a>
             </div>
           )}
         </aside>
@@ -163,7 +163,7 @@ export default function Comunidades() {
                     <div className="card-owner">
                       <img src={c.owner?.avatar_url || '/favicon.ico'} alt="" className="owner-avatar" />
                       <div>
-                        <div className="owner-name">{c.owner?.username}</div>
+                        <div className="owner-name">{c.owner?.display_name}</div>
                         <div className="owner-platform">{platformIcon[c.platform] ?? '🎮'} {c.platform}</div>
                       </div>
                     </div>

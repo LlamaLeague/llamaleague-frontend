@@ -21,7 +21,7 @@ export default function Historial() {
 
       if (user.type === 'streamer') {
         const { data } = await sb.from('lobbies').select(`
-          id, mode, server, status, winner, player_count, created_at, ended_at,
+          id, mode, server, status, winner_team, player_count, created_at, ended_at,
           community:community_id ( name, tag )
         `).eq('created_by', user.id).eq('status', 'completed')
           .order('ended_at', { ascending: false }).limit(30)
@@ -29,10 +29,9 @@ export default function Historial() {
       } else {
         const { data: lp } = await sb.from('lobby_players').select(`
           team, lobby:lobby_id (
-            id, mode, server, status, winner, player_count, created_at, ended_at,
-            community:community_id ( name, tag )
+            id, mode, server, status, winner_team, player_count, created_at, ended_at
           )
-        `).eq('user_id', user.id).eq('confirmed', true)
+        `).eq('user_id', user.id)
           .not('lobby', 'is', null)
         const partidas = (lp ?? [])
           .filter(p => p.lobby?.status === 'completed')
@@ -108,10 +107,10 @@ export default function Historial() {
             <div className="sb-footer">
               <img src={user.avatar_url} alt="" className="sb-avatar" />
               <div>
-                <div className="sb-name">{user.username}</div>
+                <div className="sb-name">{user.display_name}</div>
                 <div className="sb-type">{isStreamer ? 'Streamer' : 'Jugador'}</div>
               </div>
-              <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout">✕</a>
+              <a href="/api/auth/logout" className="sb-logout">✕</a>
             </div>
           )}
         </aside>
@@ -124,10 +123,10 @@ export default function Historial() {
             <div className="empty">Sin partidas todavía</div>
           ) : (
             partidas.map(p => {
-              const ganeMiEquipo = p.my_team && p.winner === p.my_team
+              const ganeMiEquipo = p.my_team && p.winner_team === p.my_team
               const barColor = p.my_team
                 ? (ganeMiEquipo ? '#22c55e' : '#ef4444')
-                : (p.winner === 'radiant' ? '#22c55e' : '#ef4444')
+                : (p.winner_team === 'radiant' ? '#22c55e' : '#ef4444')
 
               return (
                 <div className="row" key={p.id}>
@@ -137,11 +136,11 @@ export default function Historial() {
                     <div className="row-meta">{p.server} · {p.community?.name}</div>
                   </div>
                   <div className="row-winner" style={{
-                    background: p.winner === 'radiant' ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.1)',
-                    color: p.winner === 'radiant' ? '#22c55e' : '#ef4444',
-                    border: `1px solid ${p.winner === 'radiant' ? 'rgba(34,197,94,.2)' : 'rgba(239,68,68,.2)'}`
+                    background: p.winner_team === 'radiant' ? 'rgba(34,197,94,.1)' : 'rgba(239,68,68,.1)',
+                    color: p.winner_team === 'radiant' ? '#22c55e' : '#ef4444',
+                    border: `1px solid ${p.winner_team === 'radiant' ? 'rgba(34,197,94,.2)' : 'rgba(239,68,68,.2)'}`
                   }}>
-                    {p.winner === 'radiant' ? 'Radiant' : 'Dire'} gana
+                    {p.winner_team === 'radiant' ? 'Radiant' : 'Dire'} gana
                   </div>
                   <div className="row-players">{p.player_count}/10</div>
                   <div className="row-date">{new Date(p.ended_at ?? p.created_at).toLocaleDateString('es-PE')}</div>

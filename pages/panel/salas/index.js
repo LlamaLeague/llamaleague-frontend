@@ -87,10 +87,10 @@ export default function MisSalas() {
             <div className="sb-footer">
               <img src={user.avatar_url} alt="" className="sb-avatar" />
               <div>
-                <div className="sb-name">{user.username}</div>
+                <div className="sb-name">{user.display_name}</div>
                 <div className="sb-type">Streamer</div>
               </div>
-              <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout">✕</a>
+              <a href="/api/auth/logout" className="sb-logout">✕</a>
             </div>
           )}
         </aside>
@@ -133,8 +133,8 @@ export default function MisSalas() {
                       </span>
                     </td>
                     <td>{s.player_count ?? 0}/10</td>
-                    <td style={{textTransform:'capitalize', color: s.winner === 'radiant' ? '#22c55e' : s.winner === 'dire' ? '#ef4444' : '#374151'}}>
-                      {s.winner ?? '—'}
+                    <td style={{textTransform:'capitalize', color: s.winner_team === 'radiant' ? '#22c55e' : s.winner_team === 'dire' ? '#ef4444' : '#374151'}}>
+                      {s.winner_team ?? '—'}
                     </td>
                     <td style={{color:'#6b7280'}}>{new Date(s.created_at).toLocaleDateString('es-PE')}</td>
                     <td>

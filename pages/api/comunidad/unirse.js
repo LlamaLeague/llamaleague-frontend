@@ -1,49 +1,37 @@
 // pages/api/comunidad/unirse.js
-// POST { community_id }
-// Agrega al jugador al roster de la comunidad.
+// POST { community_id } — agrega al jugador al roster de la comunidad.
 
 import { getIronSession } from 'iron-session'
-import { createClient }   from '@supabase/supabase-js'
+import { supabaseAdmin }  from '@/lib/supabase'
 
 const SESSION_OPTIONS = {
   password:   process.env.SESSION_SECRET,
   cookieName: 'llamaleague_session',
-  cookieOptions: { secure: process.env.NODE_ENV === 'production', httpOnly:true, sameSite:'lax' },
+  cookieOptions: { secure: process.env.NODE_ENV === 'production', httpOnly: true, sameSite: 'lax' },
 }
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-)
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
   const session = await getIronSession(req, res, SESSION_OPTIONS)
-  if (!session.user) return res.status(401).json({ error: 'Debes iniciar sesion primero' })
+  if (!session.user) return res.status(401).json({ error: 'Debes iniciar sesión primero' })
 
   const { community_id } = req.body
   if (!community_id) return res.status(400).json({ error: 'Falta community_id' })
 
-  // Obtener la comunidad para verificar modo de acceso
-  const { data: community, error: comErr } = await supabase
+  const { data: community } = await supabaseAdmin
     .from('communities')
     .select('id, access_mode, owner_id')
     .eq('id', community_id)
     .single()
 
-  if (comErr || !community) return res.status(404).json({ error: 'Comunidad no encontrada' })
+  if (!community) return res.status(404).json({ error: 'Comunidad no encontrada' })
 
-  // Si es whitelist, no se puede unir directamente
-  if (community.access_mode === 'whitelist') {
-    return res.status(403).json({ error: 'Esta comunidad requiere aprobacion manual del streamer' })
-  }
+  if (community.access_mode === 'whitelist')
+    return res.status(403).json({ error: 'Esta comunidad requiere aprobación manual del streamer' })
 
-  // Si es subs_only — por ahora lo permitimos y lo verificaremos al crear salas
-  // (la verificacion de subs via API de Twitch/Kick se hace al momento de unirse a una sala)
-
-  // Verificar que no este ya en el roster
-  const { data: existing } = await supabase
+  // Verificar si ya es miembro
+  const { data: existing } = await supabaseAdmin
     .from('roster')
     .select('id')
     .eq('community_id', community_id)
@@ -52,13 +40,12 @@ export default async function handler(req, res) {
 
   if (existing) return res.status(400).json({ error: 'Ya eres miembro de esta comunidad' })
 
-  // Insertar en roster
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('roster')
     .insert({
       community_id,
       user_id:  session.user.id,
-      approved: community.access_mode === 'open', // open = aprobado automatico
+      approved: community.access_mode === 'open',
     })
 
   if (error) return res.status(500).json({ error: error.message })

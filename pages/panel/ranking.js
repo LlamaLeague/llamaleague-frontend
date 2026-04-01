@@ -20,31 +20,13 @@ export default function Ranking() {
       const { createClient } = require('@supabase/supabase-js')
       const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
-      // Para streamers: ranking de su comunidad
-      // Para jugadores: ranking de todas sus comunidades
-      if (user.type === 'streamer') {
-        const { data: com } = await sb.from('communities').select('id,name,tag').eq('owner_id', user.id).single()
-        if (com) {
-          setCommunity(com)
-          const { data } = await sb.from('ranking').select(`
-            position, points, wins, losses,
-            user:user_id ( id, username, avatar_url )
-          `).eq('community_id', com.id).order('position', { ascending: true }).limit(50)
-          setRanking(data ?? [])
-        }
-      } else {
-        // Jugador — buscar en qué comunidades está
-        const { data: roster } = await sb.from('roster').select('community_id').eq('user_id', user.id).eq('approved', true)
-        if (roster?.length) {
-          const ids = roster.map(r => r.community_id)
-          const { data } = await sb.from('ranking').select(`
-            position, points, wins, losses,
-            community:community_id ( name, tag ),
-            user:user_id ( id, username, avatar_url )
-          `).in('community_id', ids).eq('user_id', user.id)
-          setRanking(data ?? [])
-        }
-      }
+      // Ranking global por puntos — tabla users
+      const { data } = await sb
+        .from('users')
+        .select('id, display_name, avatar_url, points, wins, losses, tier, mmr_estimate')
+        .order('points', { ascending: false })
+        .limit(50)
+      setRanking(data ?? [])
       setLoading(false)
     })
   }, [])
@@ -117,10 +99,10 @@ export default function Ranking() {
             <div className="sb-footer">
               <img src={user.avatar_url} alt="" className="sb-avatar" />
               <div>
-                <div className="sb-name">{user.username}</div>
+                <div className="sb-name">{user.display_name}</div>
                 <div className="sb-type">{isStreamer ? 'Streamer' : 'Jugador'}</div>
               </div>
-              <a href="https://llamaleague-api.onrender.com/api/auth/logout" className="sb-logout">✕</a>
+              <a href="/api/auth/logout" className="sb-logout">✕</a>
             </div>
           )}
         </aside>
@@ -133,11 +115,11 @@ export default function Ranking() {
             <div className="empty">Sin datos todavía — juega partidas para aparecer en el ranking</div>
           ) : (
             ranking.map((r, i) => (
-              <div className="rank-row" key={r.user?.id ?? i}>
+              <div className="rank-row" key={r.id ?? i}>
                 <div className="rank-pos" style={{color: posColor(i)}}>{r.position ?? i+1}</div>
-                <img src={r.user?.avatar_url || '/favicon.ico'} alt="" className="rank-avatar" />
+                <img src={r.avatar_url || '/favicon.ico'} alt="" className="rank-avatar" />
                 <div>
-                  <div className="rank-name">{r.user?.username}</div>
+                  <div className="rank-name">{r.display_name}</div>
                   {!isStreamer && r.community && (
                     <div className="rank-community">/c/{r.community.tag}</div>
                   )}
