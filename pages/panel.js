@@ -67,7 +67,6 @@ function Sidebar({ user }) {
         { href:'/panel/comunidad',    label:'Mi Comunidad' },
         { href:'/panel/salas',        label:'Salas'        },
         { href:'/panel/ranking',      label:'Ranking'      },
-        { href:'/panel/copa',         label:'Copa'         },
       ]
     : [
         { href:'/panel',              label:'Dashboard'    },

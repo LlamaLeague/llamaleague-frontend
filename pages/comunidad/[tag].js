@@ -114,7 +114,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
     <>
       <Head>
         <title>{community.name} — LlamaLeague</title>
-        <meta name="description" content={community.description || `Comunidad de Dota 2 de ${community.owner.username} en LlamaLeague`} />
+        <meta name="description" content={community.description || `Comunidad de Dota 2 de ${community.owner.display_name} en LlamaLeague`} />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
@@ -275,7 +275,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
             <a href="/panel" className="btn-nav-ghost">Mi panel</a>
           ) : (
             <>
-              <a href="https://llamaleague-api.onrender.com/api/auth/steam" className="btn-nav-ghost">Iniciar sesion</a>
+              <a href="/login" className="btn-nav-ghost">Iniciar sesion</a>
               <a href="/register"       className="btn-nav-red">Registrar</a>
             </>
           )}
@@ -285,7 +285,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
       {/* HERO */}
       <div className="hero">
         <div className="hero-inner">
-          <img src={community.owner.avatar_url} alt={community.owner.username} className="owner-avatar" />
+          <img src={community.owner.avatar_url} alt={community.owner.display_name} className="owner-avatar" />
 
           <div className="hero-info">
             <div className="hero-tag">Comunidad · {community.tag}</div>
@@ -294,7 +294,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
             <div className="hero-meta">
               <span className="meta-chip">{platformIcon} {community.platform}</span>
               <span className="meta-chip">🔒 {accessLabel}</span>
-              <span className="meta-chip">👤 {community.owner.username}</span>
+              <span className="meta-chip">👤 {community.owner.display_name}</span>
               <a href={community.channel_url} target="_blank" rel="noopener noreferrer" className="channel-link">
                 Ver canal →
               </a>
@@ -339,7 +339,7 @@ export default function ComunidadPublica({ community, ranking, salas }) {
                     {r.position}
                   </div>
                   <img src={r.user.avatar_url} alt="" className="rank-avatar" />
-                  <div className="rank-name">{r.user.username}</div>
+                  <div className="rank-name">{r.user.display_name}</div>
                   <div className="rank-record">
                     <span className="w">{r.wins}W</span> <span className="l">{r.losses}L</span>
                   </div>
@@ -367,8 +367,8 @@ export default function ComunidadPublica({ community, ranking, salas }) {
                     <div className="sala-mode">{s.mode || 'All Pick'}</div>
                     <div className="sala-date">{formatDate(s.created_at)}</div>
                   </div>
-                  <div className={`sala-winner ${s.winner || 'none'}`}>
-                    {s.winner === 'radiant' ? 'Radiant' : s.winner === 'dire' ? 'Dire' : s.status === 'cancelled' ? 'Cancelada' : '—'}
+                  <div className={`sala-winner ${s.winner_team || 'none'}`}>
+                    {s.winner_team === 'radiant' ? 'Radiant' : s.winner_team === 'dire' ? 'Dire' : s.status === 'cancelled' ? 'Cancelada' : '—'}
                   </div>
                 </div>
               ))

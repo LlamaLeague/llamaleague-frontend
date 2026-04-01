@@ -144,8 +144,8 @@ export default function Perfil() {
           <div className="nav-logo">LlamaLeague</div>
           <nav className="nav-links">
             <a href="/panel" className="nav-item">Dashboard</a>
-            <a href="/salas" className="nav-item">Salas</a>
-            <a href="/ranking" className="nav-item">Ranking</a>
+            <a href="/panel/salas" className="nav-item">Salas</a>
+            <a href="/panel/ranking" className="nav-item">Ranking</a>
             <a href="/perfil" className="nav-item active">Mi Perfil</a>
           </nav>
           <div className="nav-foot">

@@ -81,12 +81,12 @@ export default function Admin() {
         body: JSON.stringify({ user_id: pago.user_id, balance: pago.coins })
       })
     }
-    showMsg(`✓ ${pago.coins} coins → ${pago.user?.username}`)
+    showMsg(`✓ ${pago.coins} coins → ${pago.user?.display_name}`)
     loadAll()
   }
 
   const rechazarPago = async (pago) => { await sbPatch('payments', pago.id, { status: 'rejected' }); showMsg('✗ Pago rechazado', false); loadAll() }
-  const aprobarSolicitud = async (s) => { await sbPatch('roster', s.id, { approved: true }); showMsg(`✓ ${s.user?.username} aprobado`); loadAll() }
+  const aprobarSolicitud = async (s) => { await sbPatch('roster', s.id, { approved: true }); showMsg(`✓ ${s.user?.display_name} aprobado`); loadAll() }
   const rechazarSolicitud = async (s) => {
     await fetch(`${sb_url}/rest/v1/roster?id=eq.${s.id}`, { method: 'DELETE', headers: { apikey: sb_key, Authorization: `Bearer ${sb_key}` } })
     showMsg('✗ Solicitud rechazada', false); loadAll()
@@ -161,7 +161,7 @@ export default function Admin() {
           <div className="hdr-right">
             <button className="rbtn" onClick={loadAll}>↻</button>
             <img src={user?.avatar_url} alt="" className="hdr-avatar" />
-            <span className="hdr-name">{user?.username}</span>
+            <span className="hdr-name">{user?.display_name}</span>
           </div>
         </div>
 
@@ -182,7 +182,7 @@ export default function Admin() {
                 <div className="card-hdr">
                   <img src={p.user?.avatar_url||'/favicon.ico'} alt="" className="av" />
                   <div className="ci">
-                    <div className="cn">{p.user?.username}</div>
+                    <div className="cn">{p.user?.display_name}</div>
                     <div className="cs">{new Date(p.created_at).toLocaleString('es-PE')}</div>
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export default function Admin() {
                   <div className="pr" key={j.id}>
                     <img src={j.avatar_url||'/favicon.ico'} alt="" className="av" style={{width:32,height:32}} />
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{j.username}</div>
+                      <div style={{fontSize:13,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{j.display_name}</div>
                       <div style={{fontSize:10,color:'#6b7280'}}>{new Date(j.created_at).toLocaleDateString('es-PE')}</div>
                     </div>
                     {j.type && <span className={`pt ${j.type==='streamer'?'pt-s':'pt-p'}`}>{j.type}</span>}
@@ -250,7 +250,7 @@ export default function Admin() {
                 <div className="card-hdr">
                   <img src={s.user?.avatar_url||'/favicon.ico'} alt="" className="av" />
                   <div className="ci">
-                    <div className="cn">{s.user?.username}</div>
+                    <div className="cn">{s.user?.display_name}</div>
                     <div className="cs">→ <strong>{s.community?.name}</strong></div>
                   </div>
                 </div>
