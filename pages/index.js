@@ -466,7 +466,7 @@ export default function Home() {
           <a href="#precios">Precios</a>
         </div>
         <div className="nav-actions">
-          <a href="/registro" className="btn-ghost">Iniciar Sesion</a>
+          <a href="/login" className="btn-ghost">Iniciar Sesion</a>
           <a href="/registro" className="btn-cta">Registrar</a>
         </div>
       </nav>
