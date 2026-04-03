@@ -45,21 +45,40 @@ export default function MiComunidad() {
     })
   }, [])
 
-  // Subir imagen (banner o logo)
+  // Subir imagen (banner o logo) — convierte a base64 antes de enviar
   const handleUpload = async (type, file) => {
     if (!file) return
+    // Validar tamaño en cliente (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadMsg({ ok: false, text: 'La imagen no puede superar 5MB' })
+      setTimeout(() => setUploadMsg(null), 3000)
+      return
+    }
     setUploading(type)
     setUploadMsg(null)
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('type', type)
     try {
-      const res  = await fetch('/api/comunidad/upload-image', { method:'POST', credentials:'include', body: fd })
+      // Leer como base64
+      const fileBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload  = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsDataURL(file)
+      })
+      const res = await fetch('/api/comunidad/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          type,
+          fileBase64,
+          mimeType: file.type,
+          fileName: file.name,
+        }),
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
-      // Actualizar community local con la nueva URL
       setCommunity(prev => ({ ...prev, [type === 'banner' ? 'banner_url' : 'logo_url']: data.url }))
-      setUploadMsg({ ok: true, text: `${type === 'banner' ? 'Banner' : 'Logo'} actualizado` })
+      setUploadMsg({ ok: true, text: `${type === 'banner' ? 'Banner' : 'Logo'} actualizado ✓` })
     } catch(e) {
       setUploadMsg({ ok: false, text: e.message })
     }
