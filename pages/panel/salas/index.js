@@ -78,14 +78,17 @@ export default function MisSalas() {
         <aside className="sidebar">
           <div className="sb-logo">LlamaLeague</div>
           <nav className="sb-nav">
-            <a href="/panel" className="sb-item">Dashboard</a>
-            <a href="/panel/comunidad" className="sb-item">Mi Comunidad</a>
-            <a href="/panel/salas" className="sb-item active">Salas</a>
-            <a href="/panel/ranking" className="sb-item">Ranking</a>
+            <a href="/panel"             className="sb-item">Dashboard</a>
+            <a href="/panel/comunidad"   className="sb-item">Mi Comunidad</a>
+            <a href="/panel/salas"       className="sb-item active">Salas</a>
+            <a href="/panel/comunidades" className="sb-item">Comunidades</a>
+            <a href="/panel/ranking"     className="sb-item">Ranking</a>
+            <a href="/panel/historial"   className="sb-item">Historial</a>
+            <a href="/perfil"            className="sb-item">Mi Perfil</a>
           </nav>
           {user && (
             <div className="sb-footer">
-              <img src={user.avatar_url} alt="" className="sb-avatar" />
+              <img src={user.steam_avatar || user.avatar_url || '/favicon.ico'} alt="" className="sb-avatar" />
               <div>
                 <div className="sb-name">{user.display_name}</div>
                 <div className="sb-type">Streamer</div>
