@@ -316,6 +316,7 @@ export default function MiComunidad() {
               { href:'/panel/comunidades', label:'Comunidades'  },
               { href:'/panel/ranking',     label:'Ranking'      },
               { href:'/panel/historial',   label:'Historial'    },
+              { href:'/perfil',            label:'Mi Perfil'    },
             ].map(n => (
               <a key={n.href} href={n.href} className={`ll-sb-item ${n.active ? 'active' : ''}`}>{n.label}</a>
             ))}

@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
   // Verificar si ya es miembro
   const { data: existing } = await supabaseAdmin
-    .from('roster').select('id, approved')
+    .from('community_members').select('id, approved')
     .eq('community_id', community_id).eq('user_id', session.user.id).single()
 
   if (existing) {
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   // approved=true para open, approved=false para subs_only y whitelist (pendiente)
   const approved = community.access_mode === 'open'
 
-  const { error } = await supabaseAdmin.from('roster').insert({
+  const { error } = await supabaseAdmin.from('community_members').insert({
     community_id,
     user_id:  session.user.id,
     approved,

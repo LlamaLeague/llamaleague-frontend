@@ -63,12 +63,14 @@ function Sidebar({ user }) {
         { href:'/panel/comunidades', label:'Comunidades'  },
         { href:'/panel/ranking',     label:'Ranking'      },
         { href:'/panel/historial',   label:'Historial'    },
+        { href:'/perfil',            label:'Mi Perfil'    },
       ]
     : [
         { href:'/panel',             label:'Dashboard'    },
         { href:'/panel/comunidades', label:'Comunidades'  },
         { href:'/panel/ranking',     label:'Ranking'      },
         { href:'/panel/historial',   label:'Historial'    },
+        { href:'/perfil',            label:'Mi Perfil'    },
       ]
 
   const avatar = user.steam_avatar || user.avatar_url || '/favicon.ico'

@@ -28,7 +28,7 @@ export default async function handler(req, res) {
   }
 
   const { data: members, error } = await supabaseAdmin
-    .from('roster')
+    .from('community_members')
     .select(`
       id, approved, joined_at,
       user:user_id (

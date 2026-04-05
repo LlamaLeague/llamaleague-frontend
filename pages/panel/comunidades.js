@@ -156,6 +156,7 @@ export default function Comunidades() {
             <a href="/panel/comunidades" className="sb-item active">Comunidades</a>
             <a href="/panel/ranking"     className="sb-item">Ranking</a>
             <a href="/panel/historial"   className="sb-item">Historial</a>
+            <a href="/perfil"            className="sb-item">Mi Perfil</a>
           </nav>
           {user && (
             <div className="sb-footer">

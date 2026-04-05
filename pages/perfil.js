@@ -143,10 +143,13 @@ export default function Perfil() {
         <aside className="nav">
           <div className="nav-logo">LlamaLeague</div>
           <nav className="nav-links">
-            <a href="/panel" className="nav-item">Dashboard</a>
-            <a href="/panel/salas" className="nav-item">Salas</a>
-            <a href="/panel/ranking" className="nav-item">Ranking</a>
-            <a href="/perfil" className="nav-item active">Mi Perfil</a>
+            <a href="/panel"             className="nav-item">Dashboard</a>
+            {user?.type === 'streamer' && <a href="/panel/comunidad" className="nav-item">Mi Comunidad</a>}
+            {user?.type === 'streamer' && <a href="/panel/salas"     className="nav-item">Salas</a>}
+            <a href="/panel/comunidades" className="nav-item">Comunidades</a>
+            <a href="/panel/ranking"     className="nav-item">Ranking</a>
+            <a href="/panel/historial"   className="nav-item">Historial</a>
+            <a href="/perfil"            className="nav-item active">Mi Perfil</a>
           </nav>
           <div className="nav-foot">
             <img src={user.steam_avatar || user.avatar_url || '/favicon.ico'} alt="" className="nav-av" />

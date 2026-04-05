@@ -99,6 +99,7 @@ export default function Historial() {
             <a href="/panel/comunidades" className="sb-item">Comunidades</a>
             <a href="/panel/ranking"     className="sb-item">Ranking</a>
             <a href="/panel/historial"   className="sb-item active">Historial</a>
+            <a href="/perfil"            className="sb-item">Mi Perfil</a>
           </nav>
           {user && (
             <div className="sb-footer">
